@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form name="signUpForm" role="form" novalidate ng-submit="submit(signUpForm)">
+            <div class="form-group">
+                <label for="firstName">{{'SIGN_UP_FORM_FIRST_NAME' | translate}}</label>
+                <input type="text" id="firstName" name="firstName" class="form-control" ng-model="model.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="1" maxlength="40" required />
+                <div ng-messages="signUpForm.firstName.$error" ng-if="signUpForm.$submitted || !signUpForm.firstName.$pristine">
+                    <div ng-message="required">{{'SIGN_UP_FORM_FIRST_NAME_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!signUpForm.firstName.$pristine">{{'SIGN_UP_FORM_FIRST_NAME_MIN' | translate:'{ min: 1 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!signUpForm.firstName.$pristine">{{'SIGN_UP_FORM_FIRST_NAME_MAX' | translate:'{ max: 40 }'}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">{{'SIGN_UP_FORM_LAST_NAME' | translate}}</label>
+                <input type="text" id="lastName" name="lastName" class="form-control" ng-model="model.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="1" maxlength="60" required />
+                <div ng-messages="signUpForm.lastName.$error" ng-if="signUpForm.$submitted || !signUpForm.lastName.$pristine">
+                    <div ng-message="required">{{'SIGN_UP_FORM_LAST_NAME_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!signUpForm.lastName.$pristine">{{'SIGN_UP_FORM_LAST_NAME_MIN' | translate:'{ min: 1 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!signUpForm.lastName.$pristine">{{'SIGN_UP_FORM_LAST_NAME_MAX' | translate:'{ max: 60 }'}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="username">{{'SIGN_UP_FORM_USERNAME' | translate}}</label>
+                <input type="text" id="username" name="username" class="form-control" ng-model="model.username" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="3" maxlength="128" required />
+                <div ng-messages="signUpForm.username.$error" ng-if="signUpForm.$submitted || !signUpForm.username.$pristine">
+                    <div ng-message="required">{{'SIGN_UP_FORM_USERNAME_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!signUpForm.username.$pristine">{{'SIGN_UP_FORM_USERNAME_MIN' | translate:'{ min: 3 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!signUpForm.username.$pristine">{{'SIGN_UP_FORM_USERNAME_MAX' | translate:'{ max: 128 }'}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">{{'SIGN_UP_FORM_PASSWORD' | translate}}</label>
+                <input type="password" id="password" name="password" class="form-control" ng-model="model.password" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="6" maxlength="32" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$" required />
+                <div ng-messages="signUpForm.password.$error" ng-if="signUpForm.$submitted || !signUpForm.password.$pristine">
+                    <div ng-message="required">{{'SIGN_UP_FORM_PASSWORD_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!signUpForm.password.$pristine">{{'SIGN_UP_FORM_PASSWORD_MIN' | translate:'{ min: 6 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!signUpForm.password.$pristine">{{'SIGN_UP_FORM_PASSWORD_MAX' | translate:'{ max: 32 }'}}</div>
+                    <div ng-message="pattern" ng-if="!signUpForm.password.$pristine">{{'SIGN_UP_FORM_PASSWORD_PATTERN' | translate:'{ max: 32 }'}}</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                {{'SIGN_UP_FORM_SUBMIT' | translate}}
+            </button>
+        </form>
+    </div>
+</div>
+<div class="row" ng-show="errorCode">
+    <div class="col-lg-12">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="{{'ALERT_CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{errorCode}}
+        </div>
+    </div>
+</div>

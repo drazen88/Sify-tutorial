@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>{{'TODOS_ID' | translate}}</th>
+                        <th>{{'TODOS_USER_USERNAME' | translate}}</th>
+                        <th>{{'TODOS_TASK' | translate}}</th>
+                        <th>{{'TODOS_DATE' | translate}}</th>
+                        <th>{{'TODOS_STATUS' | translate}}</th>
+                        <th>{{'TODOS_EDIT_TODO' | translate}}</th>
+                        <th>{{'TODOS_DELETE_TODO' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in model">
+                        <td>{{item.id}}</td>
+                        <td>{{item.userUsername}}</td>
+                        <td>{{item.task}}</td>
+                        <td>{{item.date | date:'yyyy-MM-dd'}}</td>
+                        <td>{{item.status}}</td>
+                        <td>
+                            <a href ng-click="onClickEditTodo(item)">{{'TODOS_EDIT_TODO' | translate}}</a>
+                        </td>
+                        <td>
+                            <a href ng-click="onClickDeleteTodo(item)">{{'TODOS_DELETE_TODO' | translate}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot data-ng-if="model.length == 0">
+                    <tr>
+                        <td colspan="100%" class="small text-muted text-center">{{'DATA_SET_EMPTY_NO_DATA' | translate}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="row" ng-show="errorCode">
+    <div class="col-lg-12">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="{{'ALERT_CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{errorCode}}
+        </div>
+    </div>
+</div>

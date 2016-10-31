@@ -1,0 +1,90 @@
+todo project[
+  url www.todo.com
+  namespace com.todo
+](
+  # WEB SERVER
+  backend server[
+    template java-springboot
+    developer (dvesin, nmilinkovic, nolah, bgvoka, profesor)
+    security (principal User, role UserRole, type(username))
+  ](
+    #ENUMS
+    UserRole enum(ADMIN, MEMBER)
+    Status enum(NOT_STARTED, IN_PROGRESS, DONE)
+
+    #MODELS
+    User model(
+      firstName text[min 1, max 40]
+      lastName text[min 1, max 60]
+    )
+    Todo model(
+      user User
+      task text[min 1, max 255]
+      date date
+      status Status
+    )
+
+    #APIs
+    UserApi api(
+      user crud[model User, rest, secured ADMIN]
+      users find[from User, rest, secured ADMIN]
+      userTodos find[from Todo where Todo.user.id == userId, rest, secured ADMIN]
+    )
+    TodoApi api(
+      todo crud[model Todo, rest]
+      todos find[from Todo join User on Todo.user, response(Todo.id, User.username, Todo.task, Todo.date, Todo.status), rest, secured (ADMIN, MEMBER)]
+    )
+  )
+  # WEB APP
+  webapp client[
+    connectedTo backend
+    template js-angular
+    path /webportal
+    home signInPage
+  ](
+    UserUpdated event
+    ViewTodos event(id integer)
+    TodoUpdated event
+
+    usersPage page[path /users, secured ADMIN](
+      addUser button{on click open createUser}
+      users table[load UserApi.users](
+        viewUserTodos link{on click fire ViewTodos(item.id)}
+        editUser link{on click open editUser(item.id)}
+        deleteUser link{on click open deleteUser(item.id)}
+      ){
+        on UserUpdated reload
+      }
+      userTodos table[hidden, load UserApi.userTodos]{
+        on ViewTodos (show, reload(event.id))
+      }
+    )
+    createUser form[submit UserApi.createUser]{
+      on success (close, fire UserUpdated)
+    }
+    editUser form[load UserApi.readUser, submit UserApi.updateUser]{
+      on success (close, fire UserUpdated)
+    }
+    deleteUser form[load UserApi.readUser, submit UserApi.deleteUser]{
+      on success (close, fire UserUpdated)
+    }
+    todosPage page[path /todos, secured (ADMIN, MEMBER)](
+    addTodo button{on click open createTodo}
+    todos table[load TodoApi.todos](
+      editTodo link{on click open editTodo(item.id)}
+      deleteTodo link{on click open deleteTodo(item.id)}
+    ){
+      on TodoUpdated reload
+    }
+  )
+  createTodo form[submit TodoApi.createTodo]{
+    on success (close, fire TodoUpdated)
+  }
+  editTodo form[load TodoApi.readTodo, submit TodoApi.updateTodo]{
+    on success (close, fire TodoUpdated)
+  }
+  deleteTodo form[load TodoApi.readTodo, submit TodoApi.deleteTodo]{
+    on success (close, fire TodoUpdated)
+  }
+  )
+)

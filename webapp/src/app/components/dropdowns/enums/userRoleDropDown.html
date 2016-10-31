@@ -1,0 +1,3 @@
+<select id="{{htmlId}}" name="{{htmlName}}" class="form-control" ng-required="htmlRequired === 'true'" ng-model="selectedId" data-ng-options="item | translate for item in model" ng-disabled="disabled === 'true'" ng-change="onSelect()">
+    <option value="" selected disabled>{{'PLEASE_SELECT' | translate}}</option>
+</select>

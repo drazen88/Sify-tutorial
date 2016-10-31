@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form name="createUser" role="form" novalidate ng-submit="submit(createUser)">
+            <div class="form-group">
+                <label for="firstName">{{'CREATE_USER_FIRST_NAME' | translate}}</label>
+                <input type="text" id="firstName" name="firstName" class="form-control" ng-model="model.firstName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="1" maxlength="40" required />
+                <div ng-messages="createUser.firstName.$error" ng-if="createUser.$submitted || !createUser.firstName.$pristine">
+                    <div ng-message="required">{{'CREATE_USER_FIRST_NAME_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!createUser.firstName.$pristine">{{'CREATE_USER_FIRST_NAME_MIN' | translate:'{ min: 1 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!createUser.firstName.$pristine">{{'CREATE_USER_FIRST_NAME_MAX' | translate:'{ max: 40 }'}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName">{{'CREATE_USER_LAST_NAME' | translate}}</label>
+                <input type="text" id="lastName" name="lastName" class="form-control" ng-model="model.lastName" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="1" maxlength="60" required />
+                <div ng-messages="createUser.lastName.$error" ng-if="createUser.$submitted || !createUser.lastName.$pristine">
+                    <div ng-message="required">{{'CREATE_USER_LAST_NAME_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!createUser.lastName.$pristine">{{'CREATE_USER_LAST_NAME_MIN' | translate:'{ min: 1 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!createUser.lastName.$pristine">{{'CREATE_USER_LAST_NAME_MAX' | translate:'{ max: 60 }'}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="role">{{'CREATE_USER_ROLE' | translate}}</label>
+                <user-role-drop-down html-id="role" html-name="role" selected-id="model.role" html-required="true"> </user-role-drop-down>
+                <div ng-messages="createUser.role.$error" ng-if="createUser.$submitted || !createUser.role.$pristine">
+                    <div ng-message="required">{{'CREATE_USER_ROLE_IS_REQUIRED' | translate}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="username">{{'CREATE_USER_USERNAME' | translate}}</label>
+                <input type="text" id="username" name="username" class="form-control" ng-model="model.username" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="3" maxlength="128" required />
+                <div ng-messages="createUser.username.$error" ng-if="createUser.$submitted || !createUser.username.$pristine">
+                    <div ng-message="required">{{'CREATE_USER_USERNAME_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!createUser.username.$pristine">{{'CREATE_USER_USERNAME_MIN' | translate:'{ min: 3 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!createUser.username.$pristine">{{'CREATE_USER_USERNAME_MAX' | translate:'{ max: 128 }'}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="passwordHash">{{'CREATE_USER_PASSWORD_HASH' | translate}}</label>
+                <input type="password" id="passwordHash" name="passwordHash" class="form-control" ng-model="model.passwordHash" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="6" maxlength="128" required />
+                <div ng-messages="createUser.passwordHash.$error" ng-if="createUser.$submitted || !createUser.passwordHash.$pristine">
+                    <div ng-message="required">{{'CREATE_USER_PASSWORD_HASH_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!createUser.passwordHash.$pristine">{{'CREATE_USER_PASSWORD_HASH_MIN' | translate:'{ min: 6 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!createUser.passwordHash.$pristine">{{'CREATE_USER_PASSWORD_HASH_MAX' | translate:'{ max: 128 }'}}</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                {{'CREATE_USER_SUBMIT' | translate}}
+            </button>
+        </form>
+    </div>
+</div>
+<div class="row" ng-show="errorCode">
+    <div class="col-lg-12">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="{{'ALERT_CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{errorCode}}
+        </div>
+    </div>
+</div>

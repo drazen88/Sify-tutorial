@@ -1,0 +1,40 @@
+{
+    "name": "webapp",
+    "version": "0.0.0",
+    "dependencies": {
+        "angular-animate": "~1.5.2",
+        "angular-cookies": "~1.5.2",
+        "angular-touch": "~1.5.2",
+        "angular-sanitize": "~1.5.2",
+        "jquery": "~2.1.1",
+        "angular-ui-router": "~0.2.18",
+        "angular": "~1.5.2",
+        "angular-messages": "~1.5.2",
+        "angular-translate": "~2.11.0",
+        "angular-bootstrap": "1.2.5",
+        "bootstrap": "^3.3.6",
+        "font-awesome": "^4.5.0"
+    },
+    "overrides": {
+        "bootstrap": {
+            "main": [
+                "./dist/css/bootstrap.css",
+                "./dist/js/bootstrap.js"
+            ]
+        },
+        "font-awesome": {
+            "main": [
+                "./css/font-awesome.css",
+                "./fonts/*"
+            ]
+        }
+    },
+    "devDependencies": {
+        "angular-mocks": "~1.5.2"
+    },
+    "resolutions": {
+        "jquery": "~2.1.1",
+        "angular": "~1.5.2",
+        "angular-bootstrap": "~1.2.5"
+    }
+}

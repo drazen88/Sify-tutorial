@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form name="createTodo" role="form" novalidate ng-submit="submit(createTodo)">
+            <div class="form-group">
+                <label for="userId">{{'CREATE_TODO_USER_ID' | translate}}</label>
+                <input type="number" id="userId" name="userId" class="form-control" ng-model="model.userId" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" required>
+                <div ng-messages="createTodo.userId.$error" ng-if="createTodo.$submitted || !createTodo.userId.$pristine">
+                    <div ng-message="required">{{'CREATE_TODO_USER_ID_IS_REQUIRED' | translate}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="task">{{'CREATE_TODO_TASK' | translate}}</label>
+                <input type="text" id="task" name="task" class="form-control" ng-model="model.task" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="1" maxlength="255" required />
+                <div ng-messages="createTodo.task.$error" ng-if="createTodo.$submitted || !createTodo.task.$pristine">
+                    <div ng-message="required">{{'CREATE_TODO_TASK_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!createTodo.task.$pristine">{{'CREATE_TODO_TASK_MIN' | translate:'{ min: 1 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!createTodo.task.$pristine">{{'CREATE_TODO_TASK_MAX' | translate:'{ max: 255 }'}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="date">{{'CREATE_TODO_DATE' | translate}}</label>
+                <input type="date" id="date" name="date" class="form-control" required ng-model="model.date" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }">
+                <div ng-messages="createTodo.date.$error" ng-if="createTodo.$submitted || !createTodo.date.$pristine">
+                    <div ng-message="required">{{'CREATE_TODO_DATE_IS_REQUIRED' | translate}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status">{{'CREATE_TODO_STATUS' | translate}}</label>
+                <status-drop-down html-id="status" html-name="status" selected-id="model.status" html-required="true"> </status-drop-down>
+                <div ng-messages="createTodo.status.$error" ng-if="createTodo.$submitted || !createTodo.status.$pristine">
+                    <div ng-message="required">{{'CREATE_TODO_STATUS_IS_REQUIRED' | translate}}</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                {{'CREATE_TODO_SUBMIT' | translate}}
+            </button>
+        </form>
+    </div>
+</div>
+<div class="row" ng-show="errorCode">
+    <div class="col-lg-12">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="{{'ALERT_CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{errorCode}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1444 @@
+todo project[
+    url www.todo.com
+    namespace com.todo](
+    backend server[
+        template java-springboot
+        developer(
+            dvesin
+            nmilinkovic
+            nolah
+            bgvoka
+            profesor
+            docker
+        )
+        security(
+            principal User
+            role UserRole
+            type(
+                username
+            )
+            defaultRole ADMIN
+            adminRole MEMBER
+            signIn[
+                query findById
+                response(
+                    User.id
+                    User.firstName
+                    User.lastName
+                    User.role
+                    User.username
+                )]
+        )
+        path /
+        default model type mysql](
+        UserRole enum(
+            ADMIN ADMIN
+            MEMBER MEMBER
+        )
+        Status enum(
+            NOT_STARTED NOT_STARTED
+            IN_PROGRESS IN_PROGRESS
+            DONE DONE
+        )
+        User model[
+            type mysql
+            unique(
+                username
+            )](
+            id integer[
+                primarykey
+                max 9223372036854775807]
+            firstName text[
+                min 1
+                max 40]
+            lastName text[
+                min 1
+                max 60]
+            role UserRole
+            username text[
+                unique
+                min 3
+                max 128]
+            passwordHash text[
+                min 6
+                max 128
+                sensitive]
+            findAll find from User as User
+            countAll count from User as User
+            findById find from User as User where User.id == id
+            getById get from User as User where User.id == id
+            deleteById delete from User as User where User.id == id
+            findByFirstName find from User as User where User.firstName == firstName
+            findByLastName find from User as User where User.lastName == lastName
+            findByRole find from User as User where User.role == role
+            findByUsername find from User as User where User.username == username
+            findByPasswordHash find from User as User where User.passwordHash == passwordHash
+            users find from User as User
+        )
+        Todo model[
+            type mysql](
+            id integer[
+                primarykey
+                max 9223372036854775807]
+            user User[
+                manyToOne]
+            task text[
+                min 1
+                max 255]
+            date date
+            status Status
+            findAll find from Todo as Todo
+            countAll count from Todo as Todo
+            findById find from Todo as Todo where Todo.id == id
+            getById get from Todo as Todo where Todo.id == id
+            deleteById delete from Todo as Todo where Todo.id == id
+            findByUser find from Todo as Todo where Todo.user.id == userId
+            findByTask find from Todo as Todo where Todo.task == task
+            findByDate find from Todo as Todo where Todo.date == date
+            findByStatus find from Todo as Todo where Todo.status == status
+            userTodos find from Todo as Todo where Todo.user.id == userId
+            todos find from Todo as Todo join User as User on Todo with Todo.user
+        )
+        UserApi api(
+            readUser find[
+                secured(
+                    ADMIN
+                )
+                get /user/:id
+                query User.findById
+                response(
+                    User.id
+                    User.firstName
+                    User.lastName
+                    User.role
+                    User.username
+                    User.passwordHash
+                )
+                errors
+                request ReadUserRequest
+                response ReadUserResponse]
+            ReadUserRequest dto(
+                id integer[
+                    max 9223372036854775807]
+            )
+            ReadUserResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            createUser create[
+                secured(
+                    ADMIN
+                )
+                post /user
+                model User
+                query User.findById
+                response(
+                    User.id
+                    User.firstName
+                    User.lastName
+                    User.role
+                    User.username
+                    User.passwordHash
+                )
+                errors
+                request CreateUserRequest
+                response CreateUserResponse](
+                id id[
+                    visible(
+                        read
+                    )]
+                firstName firstName[
+                    visible(
+                        create
+                        read
+                    )]
+                lastName lastName[
+                    visible(
+                        create
+                        read
+                    )]
+                role role[
+                    visible(
+                        create
+                        read
+                    )]
+                username username[
+                    visible(
+                        create
+                        read
+                    )]
+                passwordHash passwordHash[
+                    visible(
+                        create
+                        read
+                    )]
+            )
+            CreateUserRequest dto(
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            CreateUserResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            updateUser update[
+                secured(
+                    ADMIN
+                )
+                put /user/:id
+                model User
+                query User.findById
+                response(
+                    User.id
+                    User.firstName
+                    User.lastName
+                    User.role
+                    User.username
+                    User.passwordHash
+                )
+                errors
+                request UpdateUserRequest
+                response UpdateUserResponse](
+                id id[
+                    visible(
+                        read
+                        update
+                    )]
+                firstName firstName[
+                    visible(
+                        read
+                        update
+                    )]
+                lastName lastName[
+                    visible(
+                        read
+                        update
+                    )]
+                role role[
+                    visible(
+                        read
+                        update
+                    )]
+                username username[
+                    visible(
+                        read
+                        update
+                    )]
+                passwordHash passwordHash[
+                    visible(
+                        read
+                        update
+                    )]
+            )
+            UpdateUserRequest dto(
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            UpdateUserResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            deleteUser delete[
+                secured(
+                    ADMIN
+                )
+                delete /user/:id
+                query User.findById
+                errors
+                request DeleteUserRequest]
+            DeleteUserRequest dto(
+                id integer[
+                    max 9223372036854775807]
+            )
+            users find[
+                query User.users
+                get /users
+                secured(
+                    ADMIN
+                )
+                errors
+                response(
+                    User.id
+                    User.firstName
+                    User.lastName
+                    User.role
+                    User.username
+                    User.passwordHash
+                )
+                response list UsersResponse]
+            UsersResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            userTodos find[
+                query Todo.userTodos
+                get /user-todos
+                secured(
+                    ADMIN
+                )
+                errors
+                request UserTodosRequest
+                response(
+                    Todo.id
+                    Todo.user.id
+                    Todo.task
+                    Todo.date
+                    Todo.status
+                )
+                response list UserTodosResponse]
+            UserTodosRequest dto(
+                userId integer[
+                    max 9223372036854775807]
+            )
+            UserTodosResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status Status
+            )
+        )
+        TodoApi api(
+            readTodo find[
+                get /todo/:id
+                query Todo.findById
+                response(
+                    Todo.id
+                    Todo.user.id
+                    Todo.task
+                    Todo.date
+                    Todo.status
+                )
+                errors
+                request ReadTodoRequest
+                response ReadTodoResponse]
+            ReadTodoRequest dto(
+                id integer[
+                    max 9223372036854775807]
+            )
+            ReadTodoResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status Status
+            )
+            createTodo create[
+                post /todo
+                model Todo
+                query Todo.findById
+                response(
+                    Todo.id
+                    Todo.user.id
+                    Todo.task
+                    Todo.date
+                    Todo.status
+                )
+                errors
+                request CreateTodoRequest
+                response CreateTodoResponse](
+                id id[
+                    visible(
+                        read
+                    )]
+                userId user.id[
+                    visible(
+                        create
+                        read
+                    )]
+                task task[
+                    visible(
+                        create
+                        read
+                    )]
+                date date[
+                    visible(
+                        create
+                        read
+                    )]
+                status status[
+                    visible(
+                        create
+                        read
+                    )]
+            )
+            CreateTodoRequest dto(
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status Status
+            )
+            CreateTodoResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status Status
+            )
+            updateTodo update[
+                put /todo/:id
+                model Todo
+                query Todo.findById
+                response(
+                    Todo.id
+                    Todo.user.id
+                    Todo.task
+                    Todo.date
+                    Todo.status
+                )
+                errors
+                request UpdateTodoRequest
+                response UpdateTodoResponse](
+                id id[
+                    visible(
+                        read
+                        update
+                    )]
+                userId user.id[
+                    visible(
+                        read
+                        update
+                    )]
+                task task[
+                    visible(
+                        read
+                        update
+                    )]
+                date date[
+                    visible(
+                        read
+                        update
+                    )]
+                status status[
+                    visible(
+                        read
+                        update
+                    )]
+            )
+            UpdateTodoRequest dto(
+                id integer[
+                    max 9223372036854775807]
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status Status
+            )
+            UpdateTodoResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status Status
+            )
+            deleteTodo delete[
+                delete /todo/:id
+                query Todo.findById
+                errors
+                request DeleteTodoRequest]
+            DeleteTodoRequest dto(
+                id integer[
+                    max 9223372036854775807]
+            )
+            todos find[
+                query Todo.todos
+                response(
+                    Todo.id
+                    User.username
+                    Todo.task
+                    Todo.date
+                    Todo.status
+                )
+                get /todos
+                secured(
+                    ADMIN
+                    MEMBER
+                )
+                errors
+                response list TodosResponse]
+            TodosResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                userUsername text[
+                    min 3
+                    max 128]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status Status
+            )
+        )
+        CREDENTIALS_ARE_INVALID unauthorized
+        ACCESS_TOKEN_IS_EXPIRED unauthorized
+        USER_ALREADY_EXIST dataConstraint
+        INSUFFICIENT_RIGHTS unauthorized
+        AuthenticationApi api(
+            signUp signup[
+                post /sign-up
+                query User.findById
+                response(
+                    User.id
+                    User.firstName
+                    User.lastName
+                    User.role
+                    User.username
+                )
+                errors
+                request SignUpRequest
+                response SignUpResponse](
+                firstName firstName
+                lastName lastName
+                username username
+                password text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+            )
+            SignUpRequest dto(
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                username text[
+                    min 3
+                    max 128]
+                password text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+            )
+            SignUpResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+            )
+            signIn signIn[
+                request SignInRequest
+                post /sign-in
+                query User.findById
+                response(
+                    User.id
+                    User.firstName
+                    User.lastName
+                    User.role
+                    User.username
+                )
+                errors
+                response SignInResponse]
+            SignInRequest dto(
+                username text[
+                    min 3
+                    max 128]
+                password text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+            )
+            SignInResponse dto(
+                accessToken text[
+                    min 64
+                    max 64
+                    sensitive]
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+            )
+            changePassword changepassword[
+                request ChangePasswordRequest
+                secured
+                post /change-password
+                query User.findById
+                response(
+                    User.id
+                    User.firstName
+                    User.lastName
+                    User.role
+                    User.username
+                )
+                errors
+                response ChangePasswordResponse]
+            ChangePasswordRequest dto(
+                oldPassword text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+                newPassword text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+            )
+            ChangePasswordResponse dto(
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role UserRole
+                username text[
+                    min 3
+                    max 128]
+            )
+        )
+    )
+    webapp client[
+        connectedTo(
+            backend.UserApi.readUser
+            backend.UserApi.createUser
+            backend.UserApi.updateUser
+            backend.UserApi.deleteUser
+            backend.UserApi.users
+            backend.UserApi.userTodos
+            backend.TodoApi.readTodo
+            backend.TodoApi.createTodo
+            backend.TodoApi.updateTodo
+            backend.TodoApi.deleteTodo
+            backend.TodoApi.todos
+            backend.AuthenticationApi.signUp
+            backend.AuthenticationApi.signIn
+            backend.AuthenticationApi.changePassword
+        )
+        template js-angular
+        path /webportal
+        home signInPage
+        i18n(
+            en
+        )
+        loggedin usersPage](
+        UserUpdated event
+        ViewTodos event(
+            id integer
+        )
+        TodoUpdated event
+        usersPage page[
+            path /users
+            secured(
+                ADMIN
+            )](
+            addUser button{
+                on click(
+                    open createUser
+                )}
+            users users
+            userTodos userTodos[
+                hidden]
+        )
+        createUser form[
+            submit UserApi.createUser
+            model[
+                dto backend.UserApi.CreateUserRequest](
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role backend.UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            visible(
+                firstName
+                lastName
+                role
+                username
+                passwordHash
+            )](
+            firstName text[
+                bind(
+                    model . firstName
+                )
+                min 1
+                max 40]
+            lastName text[
+                bind(
+                    model . lastName
+                )
+                min 1
+                max 60]
+            role UserRoleDropDown[
+                bind(
+                    model . role
+                )]
+            username text[
+                bind(
+                    model . username
+                )
+                min 3
+                max 128]
+            passwordHash text[
+                bind(
+                    model . passwordHash
+                )
+                min 6
+                max 128
+                sensitive]
+            submit button
+        ){
+            on success(
+                close
+                fire UserUpdated
+            )}
+        editUser form[
+            load UserApi.readUser
+            submit UserApi.updateUser
+            model[
+                dto backend.UserApi.UpdateUserRequest](
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role backend.UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            params[
+                dto backend.UserApi.ReadUserRequest](
+                id integer[
+                    max 9223372036854775807]
+            )
+            visible(
+                id
+                firstName
+                lastName
+                role
+                username
+                passwordHash
+            )](
+            id integer[
+                bind(
+                    model . id
+                )
+                max 9223372036854775807]
+            firstName text[
+                bind(
+                    model . firstName
+                )
+                min 1
+                max 40]
+            lastName text[
+                bind(
+                    model . lastName
+                )
+                min 1
+                max 60]
+            role UserRoleDropDown[
+                bind(
+                    model . role
+                )]
+            username text[
+                bind(
+                    model . username
+                )
+                min 3
+                max 128]
+            passwordHash text[
+                bind(
+                    model . passwordHash
+                )
+                min 6
+                max 128
+                sensitive]
+            submit button
+        ){
+            on success(
+                close
+                fire UserUpdated
+            )}
+        deleteUser form[
+            load UserApi.readUser
+            submit UserApi.deleteUser
+            model[
+                dto backend.UserApi.DeleteUserRequest](
+                id integer[
+                    max 9223372036854775807]
+            )
+            params[
+                dto backend.UserApi.ReadUserRequest](
+                id integer[
+                    max 9223372036854775807]
+            )
+            visible(
+                id
+            )](
+            id integer[
+                bind(
+                    model . id
+                )
+                max 9223372036854775807]
+            submit button
+        ){
+            on success(
+                close
+                fire UserUpdated
+            )}
+        todosPage page[
+            path /todos
+            secured(
+                ADMIN
+                MEMBER
+            )](
+            addTodo button{
+                on click(
+                    open createTodo
+                )}
+            todos todos
+        )
+        createTodo form[
+            submit TodoApi.createTodo
+            model[
+                dto backend.TodoApi.CreateTodoRequest](
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status backend.Status
+            )
+            visible(
+                userId
+                task
+                date
+                status
+            )](
+            userId integer[
+                bind(
+                    model . userId
+                )
+                max 9223372036854775807]
+            task text[
+                bind(
+                    model . task
+                )
+                min 1
+                max 255]
+            date date[
+                bind(
+                    model . date
+                )]
+            status StatusDropDown[
+                bind(
+                    model . status
+                )]
+            submit button
+        ){
+            on success(
+                close
+                fire TodoUpdated
+            )}
+        editTodo form[
+            load TodoApi.readTodo
+            submit TodoApi.updateTodo
+            model[
+                dto backend.TodoApi.UpdateTodoRequest](
+                id integer[
+                    max 9223372036854775807]
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status backend.Status
+            )
+            params[
+                dto backend.TodoApi.ReadTodoRequest](
+                id integer[
+                    max 9223372036854775807]
+            )
+            visible(
+                id
+                userId
+                task
+                date
+                status
+            )](
+            id integer[
+                bind(
+                    model . id
+                )
+                max 9223372036854775807]
+            userId integer[
+                bind(
+                    model . userId
+                )
+                max 9223372036854775807]
+            task text[
+                bind(
+                    model . task
+                )
+                min 1
+                max 255]
+            date date[
+                bind(
+                    model . date
+                )]
+            status StatusDropDown[
+                bind(
+                    model . status
+                )]
+            submit button
+        ){
+            on success(
+                close
+                fire TodoUpdated
+            )}
+        deleteTodo form[
+            load TodoApi.readTodo
+            submit TodoApi.deleteTodo
+            model[
+                dto backend.TodoApi.DeleteTodoRequest](
+                id integer[
+                    max 9223372036854775807]
+            )
+            params[
+                dto backend.TodoApi.ReadTodoRequest](
+                id integer[
+                    max 9223372036854775807]
+            )
+            visible(
+                id
+            )](
+            id integer[
+                bind(
+                    model . id
+                )
+                max 9223372036854775807]
+            submit button
+        ){
+            on success(
+                close
+                fire TodoUpdated
+            )}
+        signInPage page[
+            path /sign-in](
+            signInForm signInForm
+            signUp link{
+                on click(
+                    goto signUpPage
+                )}
+        )
+        signUpPage page[
+            path /sign-up](
+            signUpForm signUpForm
+            signIn link{
+                on click(
+                    goto signInPage
+                )}
+        )
+        UserSignedIn event[
+            dto backend.AuthenticationApi.SignInResponse](
+            accessToken text[
+                min 64
+                max 64
+                sensitive]
+            id integer[
+                max 9223372036854775807]
+            firstName text[
+                min 1
+                max 40]
+            lastName text[
+                min 1
+                max 60]
+            role backend.UserRole
+            username text[
+                min 3
+                max 128]
+        )
+        changePasswordForm form[
+            submit backend.AuthenticationApi.changePassword
+            model[
+                dto backend.AuthenticationApi.ChangePasswordRequest](
+                oldPassword text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+                newPassword text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+            )
+            visible(
+                oldPassword
+                newPassword
+            )](
+            oldPassword text[
+                bind(
+                    model . oldPassword
+                )
+                min 6
+                max 32
+                regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                sensitive]
+            newPassword text[
+                bind(
+                    model . newPassword
+                )
+                min 6
+                max 32
+                regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                sensitive]
+            submit button
+        ){
+            on success(
+                goto signInPage
+            )}
+        users table[
+            load UserApi.users
+            model[
+                dto backend.UserApi.UsersResponse](
+                id integer[
+                    max 9223372036854775807]
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                role backend.UserRole
+                username text[
+                    min 3
+                    max 128]
+                passwordHash text[
+                    min 6
+                    max 128
+                    sensitive]
+            )
+            visible(
+                id
+                firstName
+                lastName
+                role
+                username
+                passwordHash
+            )](
+            id integer[
+                bind(
+                    model . id
+                )
+                max 9223372036854775807]
+            firstName text[
+                bind(
+                    model . firstName
+                )
+                min 1
+                max 40]
+            lastName text[
+                bind(
+                    model . lastName
+                )
+                min 1
+                max 60]
+            role UserRoleDropDown[
+                bind(
+                    model . role
+                )]
+            username text[
+                bind(
+                    model . username
+                )
+                min 3
+                max 128]
+            passwordHash text[
+                bind(
+                    model . passwordHash
+                )
+                min 6
+                max 128
+                sensitive]
+            viewUserTodos link{
+                on click(
+                    fire ViewTodos(
+                        item . id
+                    )
+                )}
+            editUser link{
+                on click(
+                    open editUser(
+                        item . id
+                    )
+                )}
+            deleteUser link{
+                on click(
+                    open deleteUser(
+                        item . id
+                    )
+                )}
+        ){
+            on UserUpdated(
+                reload
+            )}
+        userTodos table[
+            load UserApi.userTodos
+            params[
+                dto backend.UserApi.UserTodosRequest](
+                userId integer[
+                    max 9223372036854775807]
+            )
+            model[
+                dto backend.UserApi.UserTodosResponse](
+                id integer[
+                    max 9223372036854775807]
+                userId integer[
+                    max 9223372036854775807]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status backend.Status
+            )
+            visible(
+                id
+                userId
+                task
+                date
+                status
+            )](
+            id integer[
+                bind(
+                    model . id
+                )
+                max 9223372036854775807]
+            userId integer[
+                bind(
+                    model . userId
+                )
+                max 9223372036854775807]
+            task text[
+                bind(
+                    model . task
+                )
+                min 1
+                max 255]
+            date date[
+                bind(
+                    model . date
+                )]
+            status StatusDropDown[
+                bind(
+                    model . status
+                )]
+        ){
+            on ViewTodos(
+                show
+                reload(
+                    event . id
+                )
+            )}
+        todos table[
+            load TodoApi.todos
+            model[
+                dto backend.TodoApi.TodosResponse](
+                id integer[
+                    max 9223372036854775807]
+                userUsername text[
+                    min 3
+                    max 128]
+                task text[
+                    min 1
+                    max 255]
+                date date
+                status backend.Status
+            )
+            visible(
+                id
+                userUsername
+                task
+                date
+                status
+            )](
+            id integer[
+                bind(
+                    model . id
+                )
+                max 9223372036854775807]
+            userUsername text[
+                bind(
+                    model . userUsername
+                )
+                min 3
+                max 128]
+            task text[
+                bind(
+                    model . task
+                )
+                min 1
+                max 255]
+            date date[
+                bind(
+                    model . date
+                )]
+            status StatusDropDown[
+                bind(
+                    model . status
+                )]
+            editTodo link{
+                on click(
+                    open editTodo(
+                        item . id
+                    )
+                )}
+            deleteTodo link{
+                on click(
+                    open deleteTodo(
+                        item . id
+                    )
+                )}
+        ){
+            on TodoUpdated(
+                reload
+            )}
+        signInForm form[
+            submit backend.AuthenticationApi.signIn
+            model[
+                dto backend.AuthenticationApi.SignInRequest](
+                username text[
+                    min 3
+                    max 128]
+                password text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+            )
+            visible(
+                username
+                password
+            )](
+            username text[
+                bind(
+                    model . username
+                )
+                min 3
+                max 128]
+            password text[
+                bind(
+                    model . password
+                )
+                min 6
+                max 32
+                regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                sensitive]
+            submit button
+        ){
+            on success(
+                fire UserSignedIn(
+                    success . accessToken
+                    success . id
+                    success . firstName
+                    success . lastName
+                    success . role
+                    success . username
+                )
+                goto usersPage
+            )}
+        signUpForm form[
+            submit backend.AuthenticationApi.signUp
+            model[
+                dto backend.AuthenticationApi.SignUpRequest](
+                firstName text[
+                    min 1
+                    max 40]
+                lastName text[
+                    min 1
+                    max 60]
+                username text[
+                    min 3
+                    max 128]
+                password text[
+                    min 6
+                    max 32
+                    regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                    sensitive]
+            )
+            visible(
+                firstName
+                lastName
+                username
+                password
+            )](
+            firstName text[
+                bind(
+                    model . firstName
+                )
+                min 1
+                max 40]
+            lastName text[
+                bind(
+                    model . lastName
+                )
+                min 1
+                max 60]
+            username text[
+                bind(
+                    model . username
+                )
+                min 3
+                max 128]
+            password text[
+                bind(
+                    model . password
+                )
+                min 6
+                max 32
+                regex "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$"
+                sensitive]
+            submit button
+        ){
+            on success(
+                goto signInPage
+            )}
+        UserRoleDropDown dropdown[
+            enum backend.UserRole]
+        StatusDropDown dropdown[
+            enum backend.Status]
+    )
+)

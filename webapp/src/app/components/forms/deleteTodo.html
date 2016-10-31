@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form name="deleteTodo" role="form" novalidate ng-submit="submit(deleteTodo)">
+            <button type="submit" class="btn btn-primary">
+                {{'DELETE_TODO_SUBMIT' | translate}}
+            </button>
+        </form>
+    </div>
+</div>
+<div class="row" ng-show="errorCode">
+    <div class="col-lg-12">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="{{'ALERT_CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{errorCode}}
+        </div>
+    </div>
+</div>

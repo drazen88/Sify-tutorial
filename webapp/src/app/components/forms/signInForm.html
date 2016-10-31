@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-lg-12">
+        <form name="signInForm" role="form" novalidate ng-submit="submit(signInForm)">
+            <div class="form-group">
+                <label for="username">{{'SIGN_IN_FORM_USERNAME' | translate}}</label>
+                <input type="text" id="username" name="username" class="form-control" ng-model="model.username" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="3" maxlength="128" required />
+                <div ng-messages="signInForm.username.$error" ng-if="signInForm.$submitted || !signInForm.username.$pristine">
+                    <div ng-message="required">{{'SIGN_IN_FORM_USERNAME_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!signInForm.username.$pristine">{{'SIGN_IN_FORM_USERNAME_MIN' | translate:'{ min: 3 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!signInForm.username.$pristine">{{'SIGN_IN_FORM_USERNAME_MAX' | translate:'{ max: 128 }'}}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">{{'SIGN_IN_FORM_PASSWORD' | translate}}</label>
+                <input type="password" id="password" name="password" class="form-control" ng-model="model.password" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }" minlength="6" maxlength="32" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$" required />
+                <div ng-messages="signInForm.password.$error" ng-if="signInForm.$submitted || !signInForm.password.$pristine">
+                    <div ng-message="required">{{'SIGN_IN_FORM_PASSWORD_IS_REQUIRED' | translate}}</div>
+                    <div ng-message="minlength" ng-if="!signInForm.password.$pristine">{{'SIGN_IN_FORM_PASSWORD_MIN' | translate:'{ min: 6 }'}}</div>
+                    <div ng-message="maxlength" ng-if="!signInForm.password.$pristine">{{'SIGN_IN_FORM_PASSWORD_MAX' | translate:'{ max: 32 }'}}</div>
+                    <div ng-message="pattern" ng-if="!signInForm.password.$pristine">{{'SIGN_IN_FORM_PASSWORD_PATTERN' | translate:'{ max: 32 }'}}</div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                {{'SIGN_IN_FORM_SUBMIT' | translate}}
+            </button>
+        </form>
+    </div>
+</div>
+<div class="row" ng-show="errorCode">
+    <div class="col-lg-12">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="{{'ALERT_CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{errorCode}}
+        </div>
+    </div>
+</div>

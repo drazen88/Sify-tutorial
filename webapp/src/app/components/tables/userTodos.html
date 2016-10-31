@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive" data-ng-show="visible">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>{{'USER_TODOS_ID' | translate}}</th>
+                        <th>{{'USER_TODOS_USER_ID' | translate}}</th>
+                        <th>{{'USER_TODOS_TASK' | translate}}</th>
+                        <th>{{'USER_TODOS_DATE' | translate}}</th>
+                        <th>{{'USER_TODOS_STATUS' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in model">
+                        <td>{{item.id}}</td>
+                        <td>{{item.userId}}</td>
+                        <td>{{item.task}}</td>
+                        <td>{{item.date | date:'yyyy-MM-dd'}}</td>
+                        <td>{{item.status}}</td>
+                    </tr>
+                </tbody>
+                <tfoot data-ng-if="model.length == 0">
+                    <tr>
+                        <td colspan="100%" class="small text-muted text-center">{{'DATA_SET_EMPTY_NO_DATA' | translate}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="row" ng-show="errorCode">
+    <div class="col-lg-12">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="{{'ALERT_CLOSE' | translate}}">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{errorCode}}
+        </div>
+    </div>
+</div>
