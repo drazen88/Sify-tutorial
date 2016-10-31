@@ -5,7 +5,7 @@ todo project[
   # WEB SERVER
   backend server[
     template java-springboot
-    developer (dvesin, nmilinkovic, nolah, bgvoka, profesor)
+    developer (dkvrgic, dvesin, nmilinkovic, nolah, bgvoka, profesor)
     security (principal User, role UserRole, type(username))
   ](
     #ENUMS
